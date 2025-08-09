@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +19,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function() {
+    Route::get('/', [
+        PostController::class,
+        'index'
+    ])
+        ->name('dashboard');
+
+    Route::get('/post/create', [PostController::class, 'create'])
+    ->name('post.create');
+
+    Route::post('/post/store', [PostController::class, 'store'])
+    ->name('post.store');
+
+    // tell laravel to do the matching based on the slug, not the default depencies injection
+    Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
+    ->name('post.show');
+    
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,4 +46,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

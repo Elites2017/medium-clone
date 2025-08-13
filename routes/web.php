@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
@@ -37,7 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
     // tell laravel to do the matching based on the slug, not the default depencies injection
     Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
     ->name('post.show');
-    
+
+    Route::post('/follow/{user:id}', [FollowerController::class, 'followOrUnfollow'])
+        ->name('follow_or_unfollow');
 });
 
 Route::get('/@{user:username}/', [PublicProfileController::class, 'show'])

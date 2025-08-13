@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostCreateRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Str;
 
 class PostController extends Controller
 {
@@ -14,14 +16,12 @@ class PostController extends Controller
     public function index()
     {
         //
-        $categories = Category::get();
         $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
 
         $context = [
-            "categories" => $categories,
             'posts' => $posts
         ];
-        return view('dashboard', $context);
+        return view('post.index', $context);
     }
 
     /**
@@ -30,22 +30,54 @@ class PostController extends Controller
     public function create()
     {
         //
+        $categories = Category::get();
+        $context = [
+            "categories" => $categories
+        ];
+        return view('post.create', $context);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(PostCreateRequest $request)
+    {   //
+        // $toBeValidated = [
+        //     'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:4096'],
+        //     'title' => 'required',
+        //     'content' => 'required',
+        //     'category_id' => ['required', 'exists:categories,id'],
+        //     'published_at' => ['nullable', 'datetime']
+        // ];
+
+        // $data = $request->validate($toBeValidated);
+        
+        $data = $request->validated();
+        $data ['slug'] = Str::slug($data['title']);
+        $data ['user_id'] = auth()->id();
+
+        // to save the image
+        $image = $data['image'];
+        $imagePath = $image->store('posts', 'public');
+        $data['image'] = $imagePath;
+        
+
+        Post::create($data);
+
+        return redirect()->route('dashboard');
     }
+ 
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(String $username, Post $post)
     {
         //
+        $context = [
+            'post' => $post
+        ];
+        return view('post.show', $context);
     }
 
     /**

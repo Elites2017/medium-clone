@@ -25,7 +25,7 @@
                 </div>
 
                 {{-- clap section --}}
-                <x-clap-button>
+                <x-clap-button :post="$post">
                     
                 </x-clap-button>
 
@@ -45,7 +45,7 @@
                 </div>
 
                 {{-- clap section --}}
-                <x-clap-button>
+                <x-clap-button :post="$post">
                     
                 </x-clap-button>
 

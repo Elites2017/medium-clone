@@ -103,4 +103,15 @@ class PostController extends Controller
     {
         //
     }
+
+    public function category(Category $category)
+    {
+        $posts = $category->posts()->orderBy('created_at', 'DESC')->paginate(5);
+
+        $context = [
+            'posts' => $posts,
+            'category' => $category
+        ];
+        return view('post.index', $context);
+    }
 }

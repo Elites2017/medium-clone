@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClapController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -39,8 +40,14 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
     ->name('post.show');
 
+    Route::get('/category/{category:name}', [PostController::class, 'category'])
+        ->name('post_by_category');
+
     Route::post('/follow/{user:id}', [FollowerController::class, 'followOrUnfollow'])
         ->name('follow_or_unfollow');
+
+    Route::post('/clap/{post:id}', [ClapController::class, 'capOrUnclap'])
+        ->name('clap_or_unclap');
 });
 
 Route::get('/@{user:username}/', [PublicProfileController::class, 'show'])

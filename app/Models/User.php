@@ -53,6 +53,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Post::class);
     }
 
+    public function claps() {
+        return $this->hasMany(Clap::class);
+    }
+
     public function imageUrl() {
         if ($this->image) {
             return Storage::url($this->image);
@@ -73,5 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isFollowedBy(User $user) {
         return $this->followers()->where('follower_id', $user->id);
+    }
+
+    public function hasClapped(Post $post) {
+        return $post->claps()->where('user_id', $this->id)->exists();
     }
 }

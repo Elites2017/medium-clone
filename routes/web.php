@@ -22,23 +22,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// tell laravel to do the matching based on the slug, not the default depencies injection
+Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
+    ->name('post.show');
+
+Route::get('/', [PostController::class, 'index'])
+        ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function() {
-    Route::get('/', [
-        PostController::class,
-        'index'
-    ])
-        ->name('dashboard');
 
     Route::get('/post/create', [PostController::class, 'create'])
     ->name('post.create');
 
     Route::post('/post/store', [PostController::class, 'store'])
     ->name('post.store');
-
-    // tell laravel to do the matching based on the slug, not the default depencies injection
-    Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
-    ->name('post.show');
 
     Route::get('/category/{category:name}', [PostController::class, 'category'])
         ->name('post_by_category');

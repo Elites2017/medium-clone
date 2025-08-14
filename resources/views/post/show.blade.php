@@ -12,8 +12,11 @@
                     <div>
                         <x-follow-un-follow-container :user="$post->user" class="flex gap-4">
                             <a class="hover:underline" href="{{ route('profile.show', [$post->user]) }}">{{  $post->user->name }}</a>
-                            &middot;
-                            <button class="text-emerald-500" x-text=" following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-600' : 'text-emerald-600'" @click="follow()"></button>
+                            @auth
+                                &middot;
+                                <button class="text-emerald-500" x-text=" following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-600' : 'text-emerald-600'" @click="follow()">
+                                </button>
+                            @endauth
                         </x-follow-un-follow-container>
 
                         <div class="flex gap-2 text-gray-500 text-small">
@@ -23,7 +26,6 @@
                         </div>
                     </div>
                 </div>
-
                 {{-- clap section --}}
                 <x-clap-button :post="$post">
                     

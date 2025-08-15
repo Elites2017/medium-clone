@@ -26,10 +26,31 @@
                         </div>
                     </div>
                 </div>
+                
+                {{-- edit button --}}
+                <div class="mt-4">
+                    @auth
+                        @if (auth()->user()->id === $post->user_id)
+                            
+
+                            <form action="{{ route('post.destroy', $post) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <x-danger-button class="text-white-500 hover:underline">
+                                    Delete Post
+                                </x-danger-button>
+
+                            </form>
+                        @endif
+                    @endauth
+
+                </div>
+
                 {{-- clap section --}}
                 <x-clap-button :post="$post">
                     
                 </x-clap-button>
+                
 
                 {{-- content section --}}
                 <div>

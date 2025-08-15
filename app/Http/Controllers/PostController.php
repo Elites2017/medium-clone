@@ -18,7 +18,9 @@ class PostController extends Controller
         //
 
         $user = auth()->user();
-        $query = Post::latest();
+        $query = Post::with('user')
+            ->withCount('claps')
+            ->latest();
 
         if ($user) {
             $ids = $user->following()->pluck('users.id')->toArray();
@@ -115,11 +117,28 @@ class PostController extends Controller
 
     public function category(Category $category)
     {
-        $posts = $category->posts()->orderBy('created_at', 'DESC')->paginate(5);
+        $posts = $category->posts()
+            ->with('user')
+            ->withCount('claps')
+            ->orderBy('created_at', 'DESC')->paginate(5);
 
         $context = [
             'posts' => $posts,
             'category' => $category
+        ];
+        return view('post.index', $context);
+    }
+
+    public function myPosts()
+    {
+        $user = auth()->user();
+        $posts = $user->posts()
+            ->with('user')
+            ->withCount('claps')
+            ->orderBy('created_at', 'DESC')->paginate(5);
+
+        $context = [
+            'posts' => $posts
         ];
         return view('post.index', $context);
     }

@@ -37,7 +37,7 @@ class Post extends Model
     public function readTime ($wordsPerMinute = 150) {
         $wordCount = str_word_count(strip_tags($this->content));
         $minutes = ceil($wordCount / $wordsPerMinute);
-        return $minutes;
+        return max(1, $minutes);
     }
 
     public function imageUrl() {

@@ -16,7 +16,8 @@
         </div>
 
         <div class="flex items-center gap-2 text-gray-400 text-small mb-2">
-            {{ $post->getCreatedAt() }}
+            By: <a href="{{ route('profile.show', $post->user) }}"><strong>{{ $post->user->name }}</strong></a>
+            on: <strong>{{ $post->getCreatedAt() }}</strong>
             <span class="inline-flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                         stroke="currentColor" class="size-6">

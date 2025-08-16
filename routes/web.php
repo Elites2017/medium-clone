@@ -26,6 +26,9 @@ Route::get('/', function () {
 Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
     ->name('post.show');
 
+Route::get('/category/{category:name}', [PostController::class, 'category'])
+    ->name('post_by_category');
+
 Route::get('/', [PostController::class, 'index'])
         ->name('dashboard');
 
@@ -37,14 +40,17 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::post('/post/store', [PostController::class, 'store'])
     ->name('post.store');
 
+    Route::get('/post/edit/{post}', [PostController::class, 'edit'])
+        ->name('post.edit');
+
+    Route::put('/post/update/{post}', [PostController::class, 'update'])
+        ->name('post.update');
+
     Route::delete('/post/delete/{post}', [PostController::class, 'destroy'])
         ->name('post.destroy');
 
     Route::get('/my-posts', [PostController::class, 'myPosts'])
         ->name('my_posts');
-
-    Route::get('/category/{category:name}', [PostController::class, 'category'])
-        ->name('post_by_category');
 
     Route::post('/follow/{user:id}', [FollowerController::class, 'followOrUnfollow'])
         ->name('follow_or_unfollow');

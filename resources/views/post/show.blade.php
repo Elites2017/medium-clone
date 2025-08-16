@@ -12,11 +12,11 @@
                     <div>
                         <x-follow-un-follow-container :user="$post->user" class="flex gap-4">
                             <a class="hover:underline" href="{{ route('profile.show', [$post->user]) }}">{{  $post->user->name }}</a>
-                            @auth
+                            @if(auth()->user() && auth()->user()->id !== $post->user_id)
                                 &middot;
                                 <button class="text-emerald-500" x-text=" following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-600' : 'text-emerald-600'" @click="follow()">
                                 </button>
-                            @endauth
+                            @endif
                         </x-follow-un-follow-container>
 
                         <div class="flex gap-2 text-gray-500 text-small">
@@ -31,7 +31,9 @@
                 <div class="mt-4">
                     @auth
                         @if (auth()->user()->id === $post->user_id)
-                            
+                            <x-primary-button href="{{ route('post.edit', $post) }}" class="text-white-500 hover:underline">
+                                Edit Post
+                            </x-primary-button>
 
                             <form action="{{ route('post.destroy', $post) }}" method="POST" class="inline">
                                 @csrf

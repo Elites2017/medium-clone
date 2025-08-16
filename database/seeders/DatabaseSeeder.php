@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         // create a user for the user table in case the table is empty
         User::factory()->create([
             'name' => 'Jane Doe',
+            'username' => 'jane-doe',
             'email' => 'jane@medium.com'
         ]);
 
@@ -46,6 +47,6 @@ class DatabaseSeeder extends Seeder
         }
 
         // create 100 posts
-        Post::factory(100)->create();
+        //Post::factory(100)->create();
     }
 }

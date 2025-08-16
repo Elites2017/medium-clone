@@ -23,11 +23,11 @@ class PostCreateRequest extends FormRequest
     {
         return [
             //
-            'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:4096'],
+            'image' => ['image', 'nullable', 'mimes:jpeg,png,jpg,gif,svg', 'max:4096'],
             'title' => 'required',
             'content' => 'required',
             'category_id' => ['required', 'exists:categories,id'],
-            'published_at' => ['nullable', 'datetime']
+            'published_at' => ['nullable', 'date']
         ];
     }
 }
